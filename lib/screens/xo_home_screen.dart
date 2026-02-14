@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:xo_game_project/core/app_assets.dart';
 import 'package:xo_game_project/screens/board_screen.dart';
 
-import '../app_colors.dart';
+import '../core/app_colors.dart';
 
 class XoHomeScreen extends StatelessWidget {
   const XoHomeScreen({super.key});
@@ -28,7 +29,7 @@ class XoHomeScreen extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   Image.asset(
-                    "assets/images/Frame 1.png",
+                    AppAssets.bgImage,
 
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -55,37 +56,37 @@ class XoHomeScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        BoardScreen.routeName,
-                        arguments: 'x',
-                      );
-                    },
-                    child: Expanded(
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          BoardScreen.routeName,
+                          arguments: 'x',
+                        );
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Image.asset(
-                          'assets/images/X.png',
+                          AppAssets.xImage,
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        BoardScreen.routeName,
-                        arguments: 'o',
-                      );
-                    },
-                    child: Expanded(
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          BoardScreen.routeName,
+                          arguments: 'o',
+                        );
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Image.asset(
-                          'assets/images/O.png',
+                          AppAssets.oImage,
                           fit: BoxFit.cover,
                         ),
                       ),
