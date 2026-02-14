@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xo_game_project/core/app_colors.dart';
 
 class BoardButton extends StatelessWidget {
   final String value;
@@ -14,10 +15,14 @@ class BoardButton extends StatelessWidget {
         child: Center(
           child: Text(
             value.toUpperCase(),
-            style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                fontSize: 60,
+                fontWeight: FontWeight.bold,
+                color: value == 'x' ? AppColors.xColor : AppColors.oColor),
+          ),
           ),
         ),
-      ),
-    );
+    )
+    ;
   }
 }
