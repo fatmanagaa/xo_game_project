@@ -1,18 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:xo_game_project/board_button.dart';
+import 'package:xo_game_project/screens/widgets/board_button.dart';
 
-import '../app_colors.dart';
+import '../core/app_colors.dart';
 
-class BoardScreen extends StatelessWidget {
+class BoardScreen extends StatefulWidget {
   static const String routeName = 'boardScreen';
 
   const BoardScreen({super.key});
 
   @override
+  State<BoardScreen> createState() => _BoardScreenState();
+}
+
+class _BoardScreenState extends State<BoardScreen> {
+  List<String> board = List.filled(9, '');
+
+  String currentPlayer = 'x';
+
+  int player1Score = 0;
+  int player2Score = 0;
+
+  bool gameOver = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final selectedPlayer =
+          ModalRoute.of(context)!.settings.arguments as String;
+      setState(() {
+        currentPlayer = selectedPlayer;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    String selectedPlayer =
-        ModalRoute.of(context)!.settings.arguments as String;
-    //todo:make us khnow we start with x or o
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -49,7 +73,7 @@ class BoardScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '0',
+                            '$player1Score',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 32,
@@ -69,7 +93,7 @@ class BoardScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '0',
+                            '$player2Score',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 32,
@@ -83,7 +107,7 @@ class BoardScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 32),
                 Text(
-                  'Player 1’s Turn',
+                  currentPlayer == 'x' ? 'Player 1’s Turn' : 'Player 2’s Turn',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 36,
@@ -106,11 +130,26 @@ class BoardScreen extends StatelessWidget {
                           flex: 1,
                           child: Row(
                             children: [
-                              BoardButton(),
+                              BoardButton(
+                                value: board[0],
+                                onTap: () {
+                                  return onCellTap(0);
+                                },
+                              ),
                               VerticalDivider(color: Colors.black),
-                              BoardButton(),
+                              BoardButton(
+                                value: board[1],
+                                onTap: () {
+                                  return onCellTap(1);
+                                },
+                              ),
                               VerticalDivider(color: Colors.black),
-                              BoardButton(),
+                              BoardButton(
+                                value: board[2],
+                                onTap: () {
+                                  return onCellTap(2);
+                                },
+                              ),
                             ],
                           ),
                         ),
@@ -119,11 +158,26 @@ class BoardScreen extends StatelessWidget {
                           flex: 1,
                           child: Row(
                             children: [
-                              BoardButton(),
+                              BoardButton(
+                                value: board[3],
+                                onTap: () {
+                                  return onCellTap(3);
+                                },
+                              ),
                               VerticalDivider(color: Colors.black),
-                              BoardButton(),
+                              BoardButton(
+                                value: board[4],
+                                onTap: () {
+                                  return onCellTap(4);
+                                },
+                              ),
                               VerticalDivider(color: Colors.black),
-                              BoardButton(),
+                              BoardButton(
+                                value: board[5],
+                                onTap: () {
+                                  return onCellTap(5);
+                                },
+                              ),
                             ],
                           ),
                         ),
@@ -132,11 +186,26 @@ class BoardScreen extends StatelessWidget {
                           flex: 1,
                           child: Row(
                             children: [
-                              BoardButton(),
+                              BoardButton(
+                                value: board[6],
+                                onTap: () {
+                                  return onCellTap(6);
+                                },
+                              ),
                               VerticalDivider(color: Colors.black),
-                              BoardButton(),
+                              BoardButton(
+                                value: board[7],
+                                onTap: () {
+                                  return onCellTap(7);
+                                },
+                              ),
                               VerticalDivider(color: Colors.black),
-                              BoardButton(),
+                              BoardButton(
+                                value: board[8],
+                                onTap: () {
+                                  return onCellTap(8);
+                                },
+                              ),
                             ],
                           ),
                         ),
@@ -150,5 +219,66 @@ class BoardScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void onCellTap(int index) {
+    if (board[index].isNotEmpty || gameOver) return;
+
+    setState(() {
+      board[index] = currentPlayer;
+
+      if (checkWinner()) {
+        gameOver = true;
+
+        if (currentPlayer == 'x') {
+          player1Score++;
+        } else {
+          player2Score++;
+        }
+
+        Future.delayed(Duration(seconds: 1), () {
+          resetBoard();
+        });
+      } else if (!board.contains('')) {
+        gameOver = true;
+        Future.delayed(Duration(seconds: 1), () {
+          resetBoard();
+        });
+      } else {
+        currentPlayer = currentPlayer == 'x' ? 'o' : 'x';
+      }
+    });
+  }
+
+  void resetBoard() {
+    setState(() {
+      board = List.filled(9, '');
+      gameOver = false;
+    });
+  }
+
+  bool checkWinner() {
+    List<List<int>> wins = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (var pattern in wins) {
+      if (board[pattern[0]] == currentPlayer &&
+          board[pattern[1]] == currentPlayer &&
+          board[pattern[2]] == currentPlayer) {
+        return true;
+      } else if (!board.contains('')) {
+        gameOver = true;
+      }
+    }
+
+    return false;
   }
 }
