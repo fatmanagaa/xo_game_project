@@ -29,6 +29,10 @@ Play the classic Tic-Tac-Toe game on your device! Two players take turns on the 
 |---|---|
 | ![Home Screen](assets/screenshots/xo_home_screen.png) | ![Board Screen](assets/screenshots/board_screen.png) |
 
+## About
+
+This project was built as a hands-on Flutter exercise to practice state management, navigation, and UI design. It demonstrates a clean two-screen app architecture with a home screen for player selection and a game board screen that handles all game logic — win detection, draw handling, score tracking, and board reset — using Flutter's built-in `StatefulWidget`.
+
 ## How to Run
 
 ```bash
